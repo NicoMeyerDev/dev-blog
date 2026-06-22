@@ -1,6 +1,4 @@
 label: "Projects"
 link:
-  # type: "generated-index"
-  type: "doc"
-  id: projects/overview
+  type: "generated-index"
 position: 2
