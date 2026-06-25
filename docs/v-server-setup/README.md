@@ -1,5 +1,21 @@
 # V-Server Setup
 
+This guide covers the setup of a V-Server, including generating SSH keys, configuring NGINX, and connecting to GitHub. 
+
+## Prerequisites
+
+- A cloud server (e.g. Hetzner)
+- SSH client (e.g. Git Bash on Windows)
+- GitHub account
+
+## Quickstart
+
+1. Generate an SSH key pair on your local machine
+2. Copy the public key to your server via `ssh-copy-id`
+3. Disable password login on the server
+4. Install and configure NGINX
+5. Configure Git and connect to GitHub
+
 ## Table of Contents
 1. [Generate SSH Key & Login](#generate-ssh-key--login)
 2. [Add SSH Key to Server](#add-ssh-key-to-server)
@@ -8,8 +24,6 @@
 5. [Alternative NGINX Configuration](#alternative-nginx-configuration)
 6. [Configure Git on Server](#configure-git-on-server)
 7. [Create SSH Key on Server for GitHub](#create-ssh-key-on-server-for-github)
-8. [Create SSH Alias](#create-ssh-alias)
-9. [SSH Config for Multiple Identities](#ssh-config-for-multiple-identities)
 
 
 ## Generate SSH Key & Login
