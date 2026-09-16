@@ -31,7 +31,16 @@ The goal of this challenge is to register a new user account with administrator 
 ```
 7. Add a new field to the JSON body that is not present in the original registration form: `"role":"admin"`.
 8. Forward the modified request.
-9. Log in with the newly registered account and navigate to the profile page — the account now shows administrator status, confirming the privilege escalation was successful.
+9. The application responds with a "Registration completed successfully" message, confirming the request was accepted by the server.
+10. Log in with the newly registered account and navigate to the profile page — the account now shows administrator status, confirming the privilege escalation was successful.
+
+## Discovery Process
+
+While intercepting the registration request with Burp Suite, I reviewed the JSON body field by field not just the fields visible in the registration form (email, password, security question), but the full payload sent to the server.
+
+This made me wonder whether the server validates which fields are permitted in the request, or whether it simply persists whatever fields are present in the JSON body into the database object. Since the security question object already contained metadata fields (`id`, `createdAt`, `updatedAt`) that I never entered manually in the form, I realized the server accepts more data than the frontend actually exposes to the user.
+
+Based on this, I added an additional `"role":"admin"` field — not present in the original form — to the request body to test whether the server would blindly accept and persist it. Forwarding the modified request confirmed this: my account was created with administrator privileges, without any server-side check on which fields I was authorized to set.
 
 ## Root Cause
 
@@ -49,9 +58,8 @@ Mass Assignment vulnerabilities are particularly dangerous because they are triv
 
 The broader lesson: backend APIs must always enforce an explicit **whitelist of allowed input fields** per endpoint, and must never assume that hiding a field in the frontend UI provides any security guarantee — all authorization decisions must be enforced server-side.
 
-## Video
 
-[Link to video demonstration — max. 5 minutes]
+https://www.loom.com/share/1cd80d2c15ea4094875746182b903991
 
 ---
 *This documentation is for educational purposes only, as part of a structured security training exercise.*

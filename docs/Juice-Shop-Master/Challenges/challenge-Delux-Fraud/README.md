@@ -14,17 +14,24 @@ The goal of this challenge is to obtain a Deluxe Membership in the Juice Shop wi
 3. Register a new account and log in.
 4. Open the sidebar and select "Deluxe Membership", then click "Become a Member".
 5. Add a new payment card with fictional data and select it.
-6. The "Pay" button remains disabled because the wallet balance is insufficient. Using the browser's DevTools (Inspect Element), locate the wallet balance field and temporarily set it to a higher value (e.g. 100) to unlock the UI.
-7. Inspect the "Pay" button element and remove the `mat-ripple-disabled` and `disabled="true"` attributes to enable the button in the frontend.
-8. In Burp Suite, enable "Intercept" under the Proxy tab.
-9. Click "Pay" to trigger the request and catch it in Burp Suite.
-10. In the intercepted request body, locate the JSON payload:
+6. The "Pay" button appears disabled in the UI. Inspect the button element using the browser's DevTools and remove the `mat-ripple-disabled` and `disabled="true"` attributes to enable it in the frontend.
+7. In Burp Suite, enable "Intercept" under the Proxy tab.
+8. Click "Pay" to trigger the request and catch it in Burp Suite.
+9. In the intercepted request body, locate the JSON payload:
 ```json
     {"paymentMode":"card","paymentId":7}
 ```
-11. Modify the `paymentMode` value from `"card"` to `"paid"`.
-12. Forward the modified request.
-13. The application confirms the Deluxe Membership has been granted, and the challenge is marked as solved on the score board.
+10. Modify the `paymentMode` value from `"card"` to `"paid"`.
+11. Forward the modified request.
+12. The application confirms the Deluxe Membership has been granted, and the challenge is marked as solved on the score board.
+
+## Discovery Process
+
+While going through the Deluxe Membership flow, the checkout process is not just a UI interaction — every step that sends data to the server was inspected using Burp Suite, not just the obviously interactive form fields.
+
+When intercepting the payment request, the JSON body was reviewed for fields whose values make a security-relevant claim rather than just carrying user input. The `paymentMode` field stood out: instead of being a neutral piece of data, its value (`"card"`) implicitly asserts that a real payment method was used and processed. This raised the question of whether the server actually verifies the payment against a real transaction, or simply trusts whatever value the client sends.
+
+Testing this by changing `paymentMode` to `"paid"` and forwarding the request confirmed the assumption: the server accepted the claim without any backend verification, granting the Deluxe Membership without an actual payment ever taking place.
 
 ## Root Cause
 
