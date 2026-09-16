@@ -59,7 +59,7 @@ By manipulating the registration request, a new user account can be created with
 
 By manipulating the payment request, a Deluxe Membership can be obtained without an actual payment being processed.
 
-📄 [Full documentation](Challenges/deluxe-fraud/README.md)
+📄 [Full documentation](Challenges/deluxe-Fraud/README.md)
 
 ---
 *This documentation is for educational purposes only, as part of a structured security training exercise.*
