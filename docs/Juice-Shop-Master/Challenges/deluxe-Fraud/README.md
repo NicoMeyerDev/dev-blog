@@ -1,7 +1,7 @@
 # Challenge: Deluxe Fraud
 
 **Category:** Broken Access Control (Business Logic Flaw)
-**Difficulty:** ⭐⭐⭐ (adjust to actual rating from the score board)
+**Difficulty:** ⭐⭐⭐
 
 ## Description
 
@@ -47,9 +47,14 @@ This is a classic example of a **Broken Access Control / Business Logic vulnerab
 
 The broader lesson: **never trust client-side input for security- or payment-relevant decisions** — all critical business logic must be validated and enforced server-side.
 
-## Video
 
-[Link to video demonstration — max. 5 minutes]
+## Mitigation
+
+- Never trust a client-supplied `paymentMode` or payment status field as proof of payment — verify all payments server-side against the actual response from the payment provider
+- Implement server-side checks that confirm a transaction was successfully processed (e.g. via a payment provider's webhook or callback) before granting any paid feature or membership
+- Treat the checkout/payment flow as a multi-step server-side state machine, where each step (card added, payment initiated, payment confirmed) is validated independently on the backend rather than inferred from client input
+- Regularly test checkout and payment endpoints with an intercepting proxy to identify any client-controllable field that influences payment outcome
+
 
 ---
 *This documentation is for educational purposes only, as part of a structured security training exercise.*

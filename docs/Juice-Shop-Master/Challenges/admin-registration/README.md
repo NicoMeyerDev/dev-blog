@@ -1,7 +1,7 @@
 # Challenge: Admin Registration
 
 **Category:** Improper Input Validation (Mass Assignment)
-**Difficulty:** ⭐⭐⭐ [insert difficulty from score board]
+**Difficulty:** ⭐⭐⭐
 
 ## Description
 
@@ -42,6 +42,8 @@ This made me wonder whether the server validates which fields are permitted in t
 
 Based on this, I added an additional `"role":"admin"` field — not present in the original form — to the request body to test whether the server would blindly accept and persist it. Forwarding the modified request confirmed this: my account was created with administrator privileges, without any server-side check on which fields I was authorized to set.
 
+Once I confirmed that the server accepted arbitrary fields, I needed to determine which value would actually grant elevated privileges. Common naming conventions in role-based systems (such as `admin`, `administrator`, or `superuser`) are widely known and easy to guess, so I tried `"admin"` as the value for the `role` field — a natural first guess given how consistently this naming pattern appears across web applications.
+
 ## Root Cause
 
 This vulnerability is a classic example of **Mass Assignment**: the server takes the fields submitted in the request body and writes them directly into the corresponding database object, without validating whether the client is actually authorized to set each of those fields. 
@@ -59,7 +61,12 @@ Mass Assignment vulnerabilities are particularly dangerous because they are triv
 The broader lesson: backend APIs must always enforce an explicit **whitelist of allowed input fields** per endpoint, and must never assume that hiding a field in the frontend UI provides any security guarantee — all authorization decisions must be enforced server-side.
 
 
-https://www.loom.com/share/1cd80d2c15ea4094875746182b903991
+## Mitigation
+
+- Enforce an explicit **whitelist of allowed input fields** on the registration endpoint — only accept `email`, `password`, `passwordRepeat`, `securityQuestion`, and `securityAnswer`, and reject any request containing additional, unexpected fields
+- Never derive a user's role from client-supplied input; assign the default (lowest-privilege) role server-side at account creation, independent of what the request body contains
+- Require a separate, authorized process for role changes (e.g. an existing admin promoting a user), rather than allowing roles to be set as part of self-registration
+- Apply schema validation (e.g. using a JSON Schema or a validation library) on the backend to reject any request body containing fields outside the defined registration schema
 
 ---
 *This documentation is for educational purposes only, as part of a structured security training exercise.*

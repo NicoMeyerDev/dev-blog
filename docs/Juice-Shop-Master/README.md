@@ -15,29 +15,38 @@ This project documents the analysis and exploitation of selected security vulner
 
 ## Project Overview
 
-This repository contains the documentation of 2 challenges from the OWASP Juice Shop. Each challenge represents a different type of attack:
-
-- **Admin Registration** — Mass Assignment
-- **Deluxe Fraud** — Broken Access Control
-
+This repository contains the documentation of 2 challenges from the OWASP Juice Shop. Each challenge represents a different type of attack.
 The goal of this project is to carry out selected attacks against the fictional shop, understand how and why each attack works, identify the risks that can arise during software development, and derive what needs to be considered to prevent them.
 
 ## Quickstart
 
 - Download and install VirtualBox:
-  sudo apt update && sudo apt install -y virtualbox
-    
+
+```bash
+sudo apt update && sudo apt install -y virtualbox
+```
+
 - Create a virtual machine and install Kali Linux:
-  https://www.kali.org/get-kali/#kali-platforms
+https://www.kali.org/get-kali/#kali-platforms
 
 - Clone the Juice Shop repository:
-  git clone git@github.com:juice-shop/juice-shop.git && cd juice-shop   
+
+```bash
+git clone git@github.com:juice-shop/juice-shop.git && cd juice-shop   
+```
 
 - Install dependencies:
-  sudo apt update && sudo apt install -y nodejs npm    
+
+```bash
+sudo apt update && sudo apt install -y nodejs npm    
+```
 
 - Install and start Juice Shop:
-    npm install && npm start
+
+```bash
+npm install && npm start
+```
+   
 
 - Open your browser at `127.0.0.1:3000`
 
